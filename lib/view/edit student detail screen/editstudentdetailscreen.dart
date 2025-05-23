@@ -1,4 +1,3 @@
-// import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,8 +72,7 @@ class EditStudentDetailScreen extends StatelessWidget {
                       builder: (context) {
                         return CustomBottomSheet(onImagePicked: (imagePath) {
                           studentController.selectedImagePath.value = imagePath;
-                          // log(studentController.selectedImagePath.value);
-                          // log(imagePath);
+                     
                         });
                       },
                     );
@@ -91,6 +89,13 @@ class EditStudentDetailScreen extends StatelessWidget {
                       width: 400,
                       borderRadius: 15,
                       hintText: 'Enter student name',
+                      validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'enter the name';
+                      }
+                      return null;
+                      
+                    },
                     ),
                     SizedBox(height: 25),
                     Text('Age*'),
@@ -101,6 +106,12 @@ class EditStudentDetailScreen extends StatelessWidget {
                       borderRadius: 15,
                       hintText: 'Enter age',
                       keyboardType: TextInputType.number,
+                      validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'enter age';
+                      }
+                      return null;                    
+                    },
                     ),
                     SizedBox(height: 25),
                     Text('Phone number*'),
@@ -111,6 +122,12 @@ class EditStudentDetailScreen extends StatelessWidget {
                       borderRadius: 15,
                       hintText: 'Enter phone number',
                       keyboardType: TextInputType.number,
+                      validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'enter the phone  Number';
+                      }
+                      return null;                     
+                    },
                     ),
                   ],
                 ),
@@ -127,9 +144,7 @@ class EditStudentDetailScreen extends StatelessWidget {
                         phoneNumber: phnoController.text,
                         imagePath: studentController.selectedImagePath.value,
                       );
-
                       studentController.editUserRecords(updatedStudent, index);
-
                       Get.back();
                           Get.snackbar(
                             'Success', 

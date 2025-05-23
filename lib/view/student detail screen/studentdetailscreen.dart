@@ -23,28 +23,36 @@ class StudentDetailScreen extends StatelessWidget {
             ),
             ),
             ),
-      body: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Center(
-          child: SizedBox(
-            width: 350,
-            height: 600,
-            child: Card(
-              child: Column(
-                children: [
-                  SizedBox(height: 30,),
-                  CircleAvatar(
-                    backgroundImage:FileImage(File(student.imagePath)),
-                    radius: 150,
-                  ),
-                  SizedBox(height: 30,),
-                  // Text('Name'),
-                  Text('Name: ${student.name}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-                  SizedBox(height: 10,),
-                  Text('Age: ${student.age}'.toString(),style: TextStyle(fontSize: 20),),
-                  SizedBox(height: 10,),
-                  Text('Ph no: ${student.phoneNumber}',style: TextStyle(fontSize: 20),),
-                ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Center(
+            child: SizedBox(
+              width: 350,
+              height: 600,
+              child: Card(
+                child: Column(
+                  children: [
+                    SizedBox(height: 30,),
+                    CircleAvatar(
+                      backgroundColor: AppColor.subTitle,
+                      backgroundImage:(student.imagePath.isNotEmpty)?
+                      FileImage(File(student.imagePath))
+                      :null,
+                      radius: 150,
+                      child: (student.imagePath.isEmpty)
+                      ?Icon(Icons.person,size: 180,)
+                      :null,                    
+                    ),
+                    SizedBox(height: 30,),
+                    // Text('Name'),
+                    Text('Name: ${student.name}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+                    SizedBox(height: 10,),
+                    Text('Age: ${student.age}'.toString(),style: TextStyle(fontSize: 20),),
+                    SizedBox(height: 10,),
+                    Text('Ph no: ${student.phoneNumber}',style: TextStyle(fontSize: 20),),
+                  ],
+                ),
               ),
             ),
           ),

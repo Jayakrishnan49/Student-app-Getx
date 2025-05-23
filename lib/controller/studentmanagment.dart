@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'dart:developer';
-
+import 'dart:ui';
 import 'package:get/state_manager.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +8,8 @@ import 'package:student_app_getx/model/student%20details%20db/studentdetailsdb.d
 
 class StudentmanagmentControler extends GetxController {
   var items = <StudentModel>[].obs;
+  final Debouncer debouncer = Debouncer(delay: Duration(milliseconds: 500));
+
 
   @override
   void onInit() {
@@ -23,6 +26,7 @@ class StudentmanagmentControler extends GetxController {
       log("Added Item: ${item.name}, Age: ${item.age}, Image Path: ${item.imagePath}");
     } 
     items.refresh();
+    selectedImagePath.value = '';
   }
 
   void editUserRecords(StudentModel value, int index) {
@@ -30,27 +34,25 @@ class StudentmanagmentControler extends GetxController {
     userRecordData.putAt(index, value);
     items[index] = value;
     items.refresh(); 
+    selectedImagePath.value = '';
   }
 void deleteUserRecords(int index){
-//  final userRecordData = Hive.box<StudentModel>('studentBox');
 
-//  items[index].delete();
-//   userRecordData.delete(index);
-//  items.refresh();
-  // final userRecordData = Hive.box<StudentModel>('studentBox');
   items[index].delete(); 
   items.removeAt(index); 
   items.refresh();
 }
-/////////////
+
 var searchitems = ''.obs;
 
-// Search function: just update search text
+
 void searchStudents(String value) {
-  searchitems.value = value;
+  debouncer.run((){
+    searchitems.value = value;
+  });
+  
 }
 
-// Filter function: based on current search text
 List<StudentModel> filteredItems() {
   List<StudentModel> result = [];
 
@@ -67,11 +69,8 @@ List<StudentModel> filteredItems() {
 }
 
 
-// searchStudents(String value){
-//  return searchitems.value=value;
-// }
-
   var selectedImagePath = ''.obs;
+
   Future<void> pickImageFromGallery() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -87,3 +86,24 @@ List<StudentModel> filteredItems() {
   }
 
 }
+
+
+////// debouncer
+
+class Debouncer {
+  final Duration delay;
+  VoidCallback? action;
+  Timer? _timer;
+
+  Debouncer({required this.delay});
+
+  void run(VoidCallback action) {
+    _timer?.cancel();
+    _timer = Timer(delay, action);
+  }
+
+  void dispose() {
+    _timer?.cancel();
+  }
+}
+

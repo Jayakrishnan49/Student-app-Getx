@@ -17,6 +17,11 @@ class GridStudentWidget extends StatelessWidget {
 return Obx(()
 {
   final listItem=studentmanagmentControler.filteredItems();
+      if(listItem.isEmpty){
+         return Center(
+            child: Text('No student found'),
+          );
+        }
       return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -47,11 +52,43 @@ return Obx(()
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      IconButton(onPressed: (){
-                        Get.to(EditStudentDetailScreen(student: item,index: index,));
-                      },
-                       icon: Icon(Icons.edit,color: AppColor.primary,)),
-                      IconButton(onPressed: (){
+                      // IconButton(onPressed: (){
+                      //   Get.to(EditStudentDetailScreen(student: item,index: index,));
+                      // },
+                      //  icon: Icon(Icons.edit,color: AppColor.primary,)
+                      //  ),
+                      IconButton(
+                        onPressed: () {
+                          final originalIndex = studentmanagmentControler.items.indexOf(item);
+                          if (originalIndex != -1) {
+                            Get.to(EditStudentDetailScreen(student: item, index: originalIndex));
+                          }
+                        },
+                        icon: Icon(Icons.edit, color: AppColor.primary),
+                      ),
+                      IconButton(
+                      //   onPressed: (){
+                      //   Get.defaultDialog(
+                      //     title: 'Delete Student',
+                      //     middleText: 'Are you sure you want to delete this student?',
+                      //     textConfirm: 'Yes',
+                      //     textCancel: 'No',
+                      //     confirmTextColor: Colors.white,
+                      //     buttonColor: Colors.red,
+                      //     onConfirm: () {
+                      //       studentmanagmentControler.deleteUserRecords(index);
+                      //       studentmanagmentControler.items.refresh();
+                      //       Get.back(); 
+                      //       Get.snackbar('Success', 'Student deleted successfully',
+                      //         backgroundColor: Colors.red,
+                      //         colorText: Colors.white,
+                      //       );
+                      //     },
+                      //     onCancel: () {},
+                      //   );
+                 
+                      // },
+                      onPressed: () {
                         Get.defaultDialog(
                           title: 'Delete Student',
                           middleText: 'Are you sure you want to delete this student?',
@@ -60,9 +97,12 @@ return Obx(()
                           confirmTextColor: Colors.white,
                           buttonColor: Colors.red,
                           onConfirm: () {
-                            studentmanagmentControler.deleteUserRecords(index);
-                            studentmanagmentControler.items.refresh();
-                            Get.back(); // close dialog
+                            final originalIndex = studentmanagmentControler.items.indexOf(item);
+                            if (originalIndex != -1) {
+                              studentmanagmentControler.deleteUserRecords(originalIndex);
+                              studentmanagmentControler.items.refresh();
+                            }
+                            Get.back();
                             Get.snackbar('Success', 'Student deleted successfully',
                               backgroundColor: Colors.red,
                               colorText: Colors.white,
@@ -70,8 +110,8 @@ return Obx(()
                           },
                           onCancel: () {},
                         );
-                 
-                      }, icon: Icon(Icons.delete,color: Colors.red,))
+                      },
+                       icon: Icon(Icons.delete,color: Colors.red,))
                     ],
                   )
                 ],

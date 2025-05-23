@@ -92,6 +92,7 @@ class AddStudentDetailScreen extends StatelessWidget {
                       return null;
                       
                     },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                         ),
                         SizedBox(height: 25,),
                         Text('Age*'),
@@ -109,12 +110,13 @@ class AddStudentDetailScreen extends StatelessWidget {
                       return null;
                       
                     },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                         ),
                         SizedBox(height: 25,),
                         Text('Phone number*'),
                         SizedBox(height: 15,),
                         CustomTextFormField(
-                          controller: phnoController,
+                          controller: phnoController, 
                           width: 400,
                           borderRadius: 15,
                           hintText: 'add phone number',
@@ -126,11 +128,7 @@ class AddStudentDetailScreen extends StatelessWidget {
                       return null;
                       
                     },
-                  //   inputFormatters: [
-                  //   LengthLimitingTextInputFormatter(10),
-                  //   FilteringTextInputFormatter.digitsOnly,
-                  // ],
-                    // autovalidateMode: AutovalidateMode.onUserInteraction,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                         ),
                       ],
                     ),
@@ -141,29 +139,26 @@ class AddStudentDetailScreen extends StatelessWidget {
                       borderRadius: 10,
                       onTap: () {
           
-             if (formKey.currentState!.validate() ) {
-          final value = StudentModel(
-            name: nameController.text,
-            age: int.parse(ageController.text),
-            phoneNumber: phnoController.text,
-            imagePath:  studentcontroller.selectedImagePath.value,
-          );
-        
-          studentcontroller.addUserRecords(value);
-              Get.snackbar(
-      'Success', 
-      'Student details added successfully!',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: AppColor.success,
-      colorText: Colors.white,
-      margin: EdgeInsets.all(10),
-      borderRadius: 10,
-    );
-        }
-        Get.back();
-  
-              },
-                    
+            if (formKey.currentState!.validate() ) {
+              final value = StudentModel(
+                name: nameController.text,
+                age: int.parse(ageController.text),
+                phoneNumber: phnoController.text,
+                imagePath:  studentcontroller.selectedImagePath.value,
+              );
+            Get.back();
+            studentcontroller.addUserRecords(value);
+            Get.snackbar(
+              'Success', 
+              'Student details added successfully!',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: AppColor.success,
+              colorText: Colors.white,
+              margin: EdgeInsets.all(10),
+              borderRadius: 10,
+            );           
+            }
+            }                 
                 )
                 ],
               ),
@@ -174,19 +169,4 @@ class AddStudentDetailScreen extends StatelessWidget {
     );
     
   }
-  //   bool _imageValidation() {
-  //   if (image == null || image!.isEmpty) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Text(
-  //           'please select an image',
-  //           style: TextStyle(color: Colors.white),
-  //         ),
-  //         backgroundColor: Colors.red,
-  //       ),
-  //     );
-  //     return false;
-  //   }
-  //   return true;
-  // }
 }
